@@ -47,6 +47,7 @@ def findUvs(driver):
         else:
             uv = uvHalf[1:2]
         uvs.append((uv, currentHour))
+        print(str(i)+ " of " + str(HOURS) + "hours")
         # time.sleep(5)
     return uvs
 
@@ -64,12 +65,24 @@ def formatString(dangers):
         string = string + "\n"
     return string
 
+def getInfo():
+    li = []
+    with open("details.txt", "r") as file:
+        for i in file:
+            if i[-1] == "\n":
+                li.append(i[0:-1])
+            else:
+                li.append(i)
+    return li
+
 def main():
+    # pass
     driver = setup()
     uvs = findUvs(driver)
     dangers = findDanger(uvs)
-    print(formatString(dangers))
-    
+    message = formatString(dangers)
+    userDeats = getInfo()
+    writeEmail.send_mail(message,"uv index" , userDeats[2], [userDeats[3]], userDeats[0], userDeats[1])
     time.sleep(4)
     driver.quit()
 main()
