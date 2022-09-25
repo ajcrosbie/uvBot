@@ -25,7 +25,8 @@ def clickRecurson(current, count):
     try:
         current.click()
     except:
-        time.sleep(2)
+        print(count)
+        time.sleep(1)
         clickRecurson(current, count)
 
 # looks HOURS hours ahead
@@ -80,9 +81,13 @@ def main():
     driver = setup()
     uvs = findUvs(driver)
     dangers = findDanger(uvs)
+    if dangers == []:
+        time.sleep(4)
+        # print("here safe")
+        driver.quit()
+        return
+
     message = formatString(dangers)
     userDeats = getInfo()
     writeEmail.send_mail(message,"uv index" , userDeats[2], [userDeats[3]], userDeats[0], userDeats[1])
-    time.sleep(4)
-    driver.quit()
 main()
